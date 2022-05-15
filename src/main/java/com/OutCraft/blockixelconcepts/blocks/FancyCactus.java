@@ -150,34 +150,33 @@ public class FancyCactus extends Block implements IPlantable {
 		super.tick(pState, pLevel, pPos, pRandom);
 	}
 
-	// TODO update mappings from this on
-
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor levelAccessor,
-			BlockPos pos1, BlockPos pos2) {
-		if (!state.canSurvive(levelAccessor, pos1)) {
-			levelAccessor.scheduleTick(pos1, this, 1);
+	public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState,
+			LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
+		if (!pState.canSurvive(pLevel, pCurrentPos)) {
+			pLevel.scheduleTick(pCurrentPos, this, 1);
 		}
-		return super.updateShape(state, direction, state2, levelAccessor, pos1, pos2);
+		return super.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos) {
+	public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
 		for (Direction direction : Direction.Plane.HORIZONTAL) {
-			BlockState blockstate = levelReader.getBlockState(pos.relative(direction));
+			BlockState blockstate = pLevel.getBlockState(pPos.relative(direction));
 			Material material = blockstate.getMaterial();
-			if (material.isSolid() || levelReader.getFluidState(pos.relative(direction)).is(FluidTags.LAVA)) {
+			if (material.isSolid() || pLevel.getFluidState(pPos.relative(direction)).is(FluidTags.LAVA)) {
 				return false;
 			}
 		}
-		BlockState stateBelow = levelReader.getBlockState(pos.below());
+		BlockState stateBelow = pLevel.getBlockState(pPos.below());
 		return stateBelow.is(Blocks.CACTUS) || stateBelow.is(Blocks.SAND) || stateBelow.is(Blocks.RED_SAND)
-				|| stateBelow.is(Blocks.TERRACOTTA) && !levelReader.getBlockState(pos.above()).getMaterial().isLiquid();
+				|| stateBelow.is(Blocks.TERRACOTTA) && !pLevel.getBlockState(pPos.above()).getMaterial().isLiquid();
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState p_60475_, BlockGetter p_60476_, BlockPos p_60477_,
-			PathComputationType p_60478_) {
+	public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+		if (pType == PathComputationType.AIR)
+			return true;
 		return false;
 	}
 
@@ -198,22 +197,22 @@ public class FancyCactus extends Block implements IPlantable {
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-		this.shootSpines(world, pos);
-		super.stepOn(world, pos, state, entity);
+	public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
+		this.shootSpines(pLevel, pPos);
+		super.stepOn(pLevel, pPos, pState, pEntity);
 	}
 
 	@Override
-	public void attack(BlockState state, Level world, BlockPos pos, Player player) {
-		this.shootSpines(world, pos);
-		super.attack(state, world, pos, player);
+	public void attack(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
+		this.shootSpines(pLevel, pPos);
+		super.attack(pState, pLevel, pPos, pPlayer);
 	}
 
 	@Override
-	public void onProjectileHit(Level world, BlockState state, BlockHitResult hitResult, Projectile projectile) {
-		if (!(projectile instanceof FancyCactusSpine))
-			this.shootSpines(world, hitResult.getBlockPos());
-		super.onProjectileHit(world, state, hitResult, projectile);
+	public void onProjectileHit(Level pLevel, BlockState pState, BlockHitResult pHit, Projectile pProjectile) {
+		if (!(pProjectile instanceof FancyCactusSpine))
+			this.shootSpines(pLevel, pHit.getBlockPos());
+		super.onProjectileHit(pLevel, pState, pHit, pProjectile);
 	}
 
 }

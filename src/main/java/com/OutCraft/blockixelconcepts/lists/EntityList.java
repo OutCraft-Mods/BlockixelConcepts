@@ -2,7 +2,7 @@ package com.OutCraft.blockixelconcepts.lists;
 
 import com.OutCraft.blockixelconcepts.BlockixelConcepts;
 import com.OutCraft.blockixelconcepts.entities.FancyCactusSpine;
-import com.OutCraft.blockixelconcepts.entities.Tumblewheed;
+import com.OutCraft.blockixelconcepts.entities.Tumbleweed;
 import com.OutCraft.blockixelconcepts.entities.Vulture;
 
 import net.minecraft.resources.ResourceLocation;
@@ -26,13 +26,13 @@ public class EntityList {
 			() -> EntityType.Builder.<Vulture>of(Vulture::new, MobCategory.CREATURE).sized(0.6F, 0.85F)
 					.clientTrackingRange(10)
 					.build(new ResourceLocation(BlockixelConcepts.modid, "vulture").toString()));
-	public static final RegistryObject<EntityType<Tumblewheed>> TUMBLEWHEED = EntityTypes.register("tumblewheed",
-			() -> EntityType.Builder.<Tumblewheed>of(Tumblewheed::new, MobCategory.MISC).sized(0.8F, 0.8F)
+	public static final RegistryObject<EntityType<Tumbleweed>> TUMBLEWEED = EntityTypes.register("tumbleweed",
+			() -> EntityType.Builder.<Tumbleweed>of(Tumbleweed::new, MobCategory.MISC).sized(0.8F, 0.8F)
 					.clientTrackingRange(5)
-					.build(new ResourceLocation(BlockixelConcepts.modid, "tumblewheed").toString()));
+					.build(new ResourceLocation(BlockixelConcepts.modid, "tumbleweed").toString()));
 
 	public static void addEntityAttributes(EntityAttributeCreationEvent event) {
 		event.put(EntityList.VULTURE.get(), Vulture.createAttributes());
-		event.put(EntityList.TUMBLEWHEED.get(), Tumblewheed.createAttributes());
+		event.put(EntityList.TUMBLEWEED.get(), Tumbleweed.createAttributes());
 	}
 }

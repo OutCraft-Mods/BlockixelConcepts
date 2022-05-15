@@ -2,7 +2,7 @@ package com.OutCraft.blockixelconcepts.entities.goals;
 
 import java.util.EnumSet;
 
-import com.OutCraft.blockixelconcepts.entities.Tumblewheed;
+import com.OutCraft.blockixelconcepts.entities.Tumbleweed;
 import com.OutCraft.blockixelconcepts.entities.Vulture;
 
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -11,7 +11,7 @@ import net.minecraft.world.phys.AABB;
 public class VultureThrowTumblewheedAtPlayerGoal extends Goal {
 	private Vulture vulture;
 	private int cooldown;
-	private Tumblewheed tumblewheed;
+	private Tumbleweed tumblewheed;
 
 	private double searchDistance = 10;
 
@@ -31,7 +31,7 @@ public class VultureThrowTumblewheedAtPlayerGoal extends Goal {
 		if (this.cooldown > 0) {
 			--this.cooldown;
 		} else {
-			this.tumblewheed = this.vulture.getCommandSenderWorld().getEntitiesOfClass(Tumblewheed.class,
+			this.tumblewheed = this.vulture.getCommandSenderWorld().getEntitiesOfClass(Tumbleweed.class,
 					new AABB(this.vulture.blockPosition()).inflate(this.searchDistance)).get(0);
 		}
 		super.tick();

@@ -19,9 +19,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
-public class Tumblewheed extends LivingEntity {
+public class Tumbleweed extends LivingEntity {
 
-	public Tumblewheed(EntityType<? extends Tumblewheed> entity, Level world) {
+	public Tumbleweed(EntityType<? extends Tumbleweed> entity, Level world) {
 		super(entity, world);
 	}
 

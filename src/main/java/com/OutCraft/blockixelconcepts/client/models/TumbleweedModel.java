@@ -1,7 +1,7 @@
 package com.OutCraft.blockixelconcepts.client.models;
 
 import com.OutCraft.blockixelconcepts.BlockixelConcepts;
-import com.OutCraft.blockixelconcepts.entities.Tumblewheed;
+import com.OutCraft.blockixelconcepts.entities.Tumbleweed;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -16,13 +16,13 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 
-public class TumblewheedModel<T extends Tumblewheed> extends EntityModel<T> {
+public class TumbleweedModel<T extends Tumbleweed> extends EntityModel<T> {
 	private static final double speed = 0.02;
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
-			new ResourceLocation(BlockixelConcepts.modid, "tumblewheed"), "tumblewheed");
+			new ResourceLocation(BlockixelConcepts.modid, "tumbleweed"), "tumbleweed");
 	private final ModelPart main;
 
-	public TumblewheedModel(ModelPart root) {
+	public TumbleweedModel(ModelPart root) {
 		this.main = root.getChild("main");
 	}
 
@@ -44,7 +44,7 @@ public class TumblewheedModel<T extends Tumblewheed> extends EntityModel<T> {
 	}
 
 	@Override
-	public void setupAnim(Tumblewheed tumblewheed, float p_102619_, float p_102620_, float p_102621_, float p_102622_,
+	public void setupAnim(Tumbleweed tumblewheed, float p_102619_, float p_102620_, float p_102621_, float p_102622_,
 			float p_102623_) {
 		this.main.xRot += -speed;
 	}
