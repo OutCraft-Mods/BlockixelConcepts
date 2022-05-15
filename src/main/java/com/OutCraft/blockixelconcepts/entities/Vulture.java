@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import com.OutCraft.blockixelconcepts.entities.goals.VulturePickupItemGoal;
 import com.OutCraft.blockixelconcepts.entities.goals.VultureSitOnCactusGoal;
-import com.OutCraft.blockixelconcepts.entities.goals.VultureThrowTumblewheedAtPlayerGoal;
+import com.OutCraft.blockixelconcepts.entities.goals.VultureThrowTumbleweedAtPlayerGoal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -20,6 +20,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -52,19 +54,14 @@ public class Vulture extends Animal implements FlyingAnimal {
 	}
 
 	@Override
-	public void tick() {
-		if (!this.goalSelector.getRunningGoals().toList().isEmpty())
-			System.out.println(this.goalSelector.getRunningGoals().toList().get(0).getGoal());
-		super.tick();
-	}
-
-	@Override
 	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new PanicGoal(this, 1.25D));
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new VulturePickupItemGoal(this, 1));
-		this.goalSelector.addGoal(2, new VultureThrowTumblewheedAtPlayerGoal(this));
-		this.goalSelector.addGoal(3, new VultureSitOnCactusGoal(this, 1, 20, 20));
+		this.goalSelector.addGoal(2, new VultureThrowTumbleweedAtPlayerGoal(this));
+		this.goalSelector.addGoal(3, new VultureSitOnCactusGoal(this, 1.1, 50, 20));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomFlyingGoal(this, 1));
 	}
 
 	@Override

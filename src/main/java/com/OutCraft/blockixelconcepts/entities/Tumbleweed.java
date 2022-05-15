@@ -2,6 +2,7 @@ package com.OutCraft.blockixelconcepts.entities;
 
 import java.util.Collections;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,8 +15,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
@@ -27,7 +30,7 @@ public class Tumbleweed extends LivingEntity {
 
 	public static AttributeSupplier createAttributes() {
 		return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.01).add(Attributes.MAX_HEALTH, 0.5D)
-				.add(ForgeMod.ENTITY_GRAVITY.get(), 0.01).build();
+				.add(Attributes.ATTACK_DAMAGE, 2.5).add(ForgeMod.ENTITY_GRAVITY.get(), 0.01).build();
 	}
 
 	@Override
@@ -44,6 +47,16 @@ public class Tumbleweed extends LivingEntity {
 
 		if (this.isInWaterOrBubble() || this.isInLava() || this.isInPowderSnow)
 			this.kill();
+
+		Player nearestPlayer = this.getCommandSenderWorld().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 1,
+				true);
+		if (nearestPlayer != null) {
+			nearestPlayer.hurt(DamageSource.CACTUS, (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+			this.doHurtTarget(nearestPlayer);
+			nearestPlayer.drop(nearestPlayer.getMainHandItem()
+					.split(this.random.nextInt(nearestPlayer.getMainHandItem().getCount() + 1)), false, false);
+			this.kill();
+		}
 		super.aiStep();
 	}
 
@@ -93,6 +106,13 @@ public class Tumbleweed extends LivingEntity {
 
 	@Override
 	public void kill() {
+		SoundEvent soundevent = this.getDeathSound();
+		if (soundevent != null) {
+			this.playSound(soundevent, this.getSoundVolume(), this.getVoicePitch());
+		}
+		this.getCommandSenderWorld().addDestroyBlockEffect(
+				new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ()),
+				Blocks.DEAD_BUSH.defaultBlockState());
 		this.remove(Entity.RemovalReason.KILLED);
 	}
 
@@ -102,13 +122,12 @@ public class Tumbleweed extends LivingEntity {
 	}
 
 	@Override
-	public boolean isCustomNameVisible() {
-		return false;
+	public Iterable<ItemStack> getArmorSlots() {
+		return Collections.emptyList();
 	}
 
 	@Override
-	public Iterable<ItemStack> getArmorSlots() {
-		return Collections.emptyList();
+	protected void playBlockFallSound() {
 	}
 
 	@Override
