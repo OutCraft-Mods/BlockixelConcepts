@@ -16,7 +16,7 @@ What feature is missing in the documentation? [e.g. Killerzombie]
 ### Documentation wrong
 
 **Documentation site**
-On which site of the documentation is the problem? [e.g. BlockixelConcepts/wiki/Killerzombie]
+On which site of the documentation is the problem? [e.g. ModName/wiki/entities/Killerzombie]
 
 **Problem**
 What is wrong with the documentation? [e.g. Missing information: Killerzombie can hack your pc]
