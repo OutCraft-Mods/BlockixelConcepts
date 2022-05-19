@@ -19,4 +19,4 @@ What feature is missing in the documentation? [e.g. Killerzombie]
 On which site of the documentation is the problem? [e.g. ModName/wiki/entities/Killerzombie]
 
 **Problem**
-What is wrong with the documentation? [e.g. Missing information: Killerzombie can hack your pc]
+What is wrong with the documentation? [e.g. Missing information: Killerzombies can hack your pc]
