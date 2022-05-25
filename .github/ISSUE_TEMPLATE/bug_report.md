@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of what the bug is. [e.g. When you summon killerzombie the pc gets hacked and minecraft crashes '....']
 
 **To Reproduce**
 Steps to reproduce the behavior:
