@@ -2,7 +2,9 @@ package com.OutCraft.blockixelconcepts.entities;
 
 import java.util.Collections;
 
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -48,8 +50,7 @@ public class Tumbleweed extends LivingEntity {
 		if (this.isInWaterOrBubble() || this.isInLava() || this.isInPowderSnow)
 			this.kill();
 
-		Player nearestPlayer = this.getCommandSenderWorld().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 1,
-				true);
+		Player nearestPlayer = this.getLevel().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 1, true);
 		if (nearestPlayer != null) {
 			nearestPlayer.hurt(DamageSource.CACTUS, (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
 			this.doHurtTarget(nearestPlayer);
@@ -66,9 +67,26 @@ public class Tumbleweed extends LivingEntity {
 				|| damageSource == DamageSource.GENERIC || damageSource == DamageSource.ANVIL
 				|| damageSource == DamageSource.FALLING_BLOCK || damageSource == DamageSource.FALLING_STALACTITE
 				|| damageSource == DamageSource.IN_FIRE || damageSource == DamageSource.IN_WALL
-				|| damageSource == DamageSource.LIGHTNING_BOLT || damageSource instanceof EntityDamageSource)
+				|| damageSource == DamageSource.LIGHTNING_BOLT || damageSource instanceof EntityDamageSource) {
+			if (this.level instanceof ServerLevel)
+				this.dropAllDeathLoot(damageSource);
+
 			this.kill();
+		}
 		return false;
+	}
+
+	@Override
+	public void kill() {
+		SoundEvent soundevent = this.getDeathSound();
+		if (soundevent != null) {
+			this.playSound(soundevent, this.getSoundVolume(), this.getVoicePitch());
+		}
+
+		this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.DEAD_BUSH.defaultBlockState()),
+				this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+
+		this.remove(Entity.RemovalReason.KILLED);
 	}
 
 	@Override
@@ -79,11 +97,6 @@ public class Tumbleweed extends LivingEntity {
 	@Override
 	public boolean canFreeze() {
 		return false;
-	}
-
-	@Override
-	public boolean canBreatheUnderwater() {
-		return true;
 	}
 
 	@Override
@@ -102,18 +115,6 @@ public class Tumbleweed extends LivingEntity {
 	@Override
 	public boolean isPushable() {
 		return false;
-	}
-
-	@Override
-	public void kill() {
-		SoundEvent soundevent = this.getDeathSound();
-		if (soundevent != null) {
-			this.playSound(soundevent, this.getSoundVolume(), this.getVoicePitch());
-		}
-		this.getCommandSenderWorld().addDestroyBlockEffect(
-				new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ()),
-				Blocks.DEAD_BUSH.defaultBlockState());
-		this.remove(Entity.RemovalReason.KILLED);
 	}
 
 	@Override

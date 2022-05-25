@@ -17,7 +17,6 @@ public class VultureSitOnCactusGoal extends MoveToBlockGoal {
 
 	@Override
 	public boolean canUse() {
-		System.out.println(this.nextStartTick);
 		if (this.vulture.getCommandSenderWorld().getBlockState(this.vulture.blockPosition())
 				.getBlock() instanceof FancyCactus
 				|| this.vulture.getCommandSenderWorld().getBlockState(this.vulture.blockPosition().below())

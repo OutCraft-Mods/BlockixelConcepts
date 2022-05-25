@@ -32,7 +32,4 @@ public class ClientHandler {
 		event.registerLayerDefinition(TumbleweedModel.LAYER_LOCATION, TumbleweedModel::createBodyLayer);
 	}
 
-	public static void init() {
-	}
-
 }

@@ -32,12 +32,12 @@ public class TumbleweedModel<T extends Tumbleweed> extends EntityModel<T> {
 
 		PartDefinition main = partdefinition.addOrReplaceChild("main",
 				CubeListBuilder.create().texOffs(0, 0)
-						.addBox(-8.0F, -8.0F, -6.0F, 16.0F, 16.0F, 0.0F, new CubeDeformation(0.0F)).texOffs(0, -16)
-						.addBox(-6.0F, -8.0F, -8.0F, 0.0F, 16.0F, 16.0F, new CubeDeformation(0.0F)).texOffs(-16, 0)
-						.addBox(-8.0F, -8.0F, 6.0F, 16.0F, 16.0F, 0.0F, new CubeDeformation(0.0F)).texOffs(-16, -16)
-						.addBox(6.0F, -8.0F, -8.0F, 0.0F, 16.0F, 16.0F, new CubeDeformation(0.0F)).texOffs(-16, 0)
-						.addBox(-8.0F, -6.0F, -8.0F, 16.0F, 0.0F, 16.0F, new CubeDeformation(0.0F)).texOffs(-16, 0)
-						.addBox(-8.0F, 6.0F, -8.0F, 16.0F, 0.0F, 16.0F, new CubeDeformation(0.0F)),
+						.addBox(-8.0F, -8.0F, -6.0F, 16.0F, 16.0F, 0.1F, new CubeDeformation(0.0F)).texOffs(0, -16)
+						.addBox(-6.0F, -8.0F, -8.0F, 0.1F, 16.0F, 16.0F, new CubeDeformation(0.0F)).texOffs(-16, 0)
+						.addBox(-8.0F, -8.0F, 6.0F, 16.0F, 16.0F, 0.1F, new CubeDeformation(0.0F)).texOffs(-16, -16)
+						.addBox(6.0F, -8.0F, -8.0F, 0.1F, 16.0F, 16.0F, new CubeDeformation(0.0F)).texOffs(-16, 0)
+						.addBox(-8.0F, -6.0F, -8.0F, 16.0F, 0.1F, 16.0F, new CubeDeformation(0.0F)).texOffs(-16, 0)
+						.addBox(-8.0F, 6.0F, -8.0F, 16.0F, 0.1F, 16.0F, new CubeDeformation(0.0F)),
 				PartPose.offset(0.0F, 18.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 16, 16);

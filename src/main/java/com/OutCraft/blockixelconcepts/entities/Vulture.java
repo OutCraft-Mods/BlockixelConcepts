@@ -5,19 +5,27 @@ import javax.annotation.Nullable;
 import com.OutCraft.blockixelconcepts.entities.goals.VulturePickupItemGoal;
 import com.OutCraft.blockixelconcepts.entities.goals.VultureSitOnCactusGoal;
 import com.OutCraft.blockixelconcepts.entities.goals.VultureThrowTumbleweedAtPlayerGoal;
+import com.OutCraft.blockixelconcepts.entities.goals.VultureTravelGoal;
+import com.OutCraft.blockixelconcepts.lists.ItemList;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
@@ -28,12 +36,15 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 public class Vulture extends Animal implements FlyingAnimal {
+	public Player travelPlayer;
 
 	public Vulture(EntityType<? extends Vulture> entity, Level world) {
 		super(entity, world);
@@ -55,13 +66,14 @@ public class Vulture extends Animal implements FlyingAnimal {
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new PanicGoal(this, 1.25D));
-		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new VulturePickupItemGoal(this, 1));
-		this.goalSelector.addGoal(2, new VultureThrowTumbleweedAtPlayerGoal(this));
-		this.goalSelector.addGoal(3, new VultureSitOnCactusGoal(this, 1.1, 50, 20));
-		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomFlyingGoal(this, 1));
+		this.goalSelector.addGoal(0, new VultureTravelGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.25D));
+		this.goalSelector.addGoal(1, new FloatGoal(this));
+		this.goalSelector.addGoal(2, new VulturePickupItemGoal(this, 1));
+		this.goalSelector.addGoal(3, new VultureThrowTumbleweedAtPlayerGoal(this));
+		this.goalSelector.addGoal(4, new VultureSitOnCactusGoal(this, 1.1, 50, 20));
+		this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomFlyingGoal(this, 1));
 	}
 
 	@Override
@@ -79,34 +91,96 @@ public class Vulture extends Animal implements FlyingAnimal {
 	}
 
 	@Override
-	protected void pickUpItem(ItemEntity itemEntity) {
-		if (!this.getMainHandItem().isEmpty())
-			return;
-		ItemStack itemstack = itemEntity.getItem();
-		this.spitOutItem(this.getMainHandItem());
-		this.onItemPickup(itemEntity);
+	protected void pickUpItem(ItemEntity pItemEntity) {
+		ItemStack itemstack = pItemEntity.getItem();
+		this.spitOutItem(this.getItemBySlot(EquipmentSlot.MAINHAND));
+		this.onItemPickup(pItemEntity);
 		this.setItemSlot(EquipmentSlot.MAINHAND, itemstack.split(1));
-		this.handDropChances[EquipmentSlot.MAINHAND.getIndex()] = 1.0F;
+		this.handDropChances[EquipmentSlot.MAINHAND.getIndex()] = 2.0F;
+		this.take(pItemEntity, itemstack.getCount());
+		pItemEntity.discard();
 
 	}
 
-	private void spitOutItem(ItemStack p_28602_) {
-		if (!p_28602_.isEmpty() && !this.level.isClientSide) {
-			ItemEntity itementity = new ItemEntity(this.level, this.getX() + this.getLookAngle().x, this.getY() + 1.0D,
-					this.getZ() + this.getLookAngle().z, p_28602_);
-			itementity.setPickUpDelay(40);
-			itementity.setThrower(this.getUUID());
+	public void spitOutItem(ItemStack pItemEntity) {
+		if (!pItemEntity.isEmpty() && !this.level.isClientSide) {
+			ItemEntity itemEntity = new ItemEntity(this.level, this.getX() + this.getLookAngle().x, this.getY() + 1.0D,
+					this.getZ() + this.getLookAngle().z, pItemEntity.split(pItemEntity.getCount()));
+			itemEntity.setPickUpDelay(40);
+			itemEntity.setThrower(this.getUUID());
 			this.playSound(SoundEvents.FOX_SPIT, 1.0F, 1.0F);
-			this.level.addFreshEntity(itementity);
+			this.level.addFreshEntity(itemEntity);
 		}
 	}
 
 	@Override
-	public boolean hurt(DamageSource damageSource, float damage) {
-		if (damageSource == DamageSource.CACTUS)
+	public boolean hurt(DamageSource pSource, float pAmount) {
+		if (pSource == DamageSource.CACTUS) {
 			return false;
-		else
-			return super.hurt(damageSource, damage);
+		} else if (pSource instanceof IndirectEntityDamageSource
+				&& ((IndirectEntityDamageSource) pSource).getEntity() instanceof Snowball) {
+			this.spitOutItem(this.getMainHandItem());
+			return super.hurt(pSource, pAmount);
+		} else {
+			return super.hurt(pSource, pAmount);
+		}
+	}
+
+	@Override
+	public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+		if (pPlayer.getItemInHand(pHand).getItem() != ItemList.TREASURE_GLOVE.get()
+				|| !pPlayer.getItemInHand(pHand).getOrCreateTag().contains("treasureType")
+				|| (pPlayer.getItemInHand(pHand).getDamageValue() == pPlayer.getItemInHand(pHand).getMaxDamage()))
+			return InteractionResult.PASS;
+
+		this.travelPlayer = pPlayer;
+		this.spitOutItem(this.getMainHandItem());
+		this.setItemInHand(InteractionHand.MAIN_HAND, pPlayer.getItemInHand(pHand).copy());
+		this.handDropChances[EquipmentSlot.MAINHAND.getIndex()] = 2.0F;
+		this.usePlayerItem(pPlayer, pHand, pPlayer.getItemInHand(pHand));
+
+		return InteractionResult.SUCCESS;
+	}
+
+	@Override
+	protected void populateDefaultEquipmentSlots(DifficultyInstance pDifficulty) {
+		if (this.random.nextFloat() < 0.2F) {
+			float f = this.random.nextFloat();
+			ItemStack itemstack = ItemStack.EMPTY;
+			if (f < 0.45) {
+				itemstack = new ItemStack(Items.DEAD_BUSH);
+			} else if (f < 0.9) {
+				itemstack = new ItemStack(Items.CACTUS);
+			} else if (f < 1) {
+				itemstack = this.random.nextBoolean() ? new ItemStack(Items.GOLD_ORE) : new ItemStack(Items.GOLD_INGOT);
+			}
+			this.setItemSlot(EquipmentSlot.MAINHAND, itemstack);
+		}
+
+	}
+
+	public void setMoveControl(MoveControl moveControl) {
+		this.moveControl = moveControl;
+	}
+
+	@Override
+	protected boolean canRide(Entity pEntity) {
+		return true;
+	}
+
+	@Override
+	public boolean shouldRiderSit() {
+		return false;
+	}
+
+	@Override
+	public double getPassengersRidingOffset() {
+		return -1.5;
+	}
+
+	@Override
+	public boolean canBeControlledByRider() {
+		return false;
 	}
 
 	@Override

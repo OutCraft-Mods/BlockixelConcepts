@@ -53,9 +53,9 @@ public class VultureThrowTumbleweedAtPlayerGoal extends Goal {
 					|| this.vulture.distanceTo(this.targetedPlayer) >= 400)
 				this.targetedPlayer = this.vulture.getCommandSenderWorld().getNearestPlayer(this.vulture.getX(),
 						this.vulture.getY(), this.vulture.getZ(), 300, true);
-			this.vulture.getNavigation().moveTo(this.targetedPlayer.getX(), this.targetedPlayer.getY() + 4,
+			this.vulture.getNavigation().moveTo(this.targetedPlayer.getX(), this.targetedPlayer.getY() + 1,
 					this.targetedPlayer.getZ(), 1.2);
-			if (this.vulture.distanceToSqr(this.targetedPlayer.getX(), this.targetedPlayer.getY() + 4,
+			if (this.vulture.distanceToSqr(this.targetedPlayer.getX(), this.targetedPlayer.getY() + 1,
 					this.targetedPlayer.getZ()) <= .2) {
 				this.cooldown = 1500;
 				this.tumblewheed.setNoGravity(false);

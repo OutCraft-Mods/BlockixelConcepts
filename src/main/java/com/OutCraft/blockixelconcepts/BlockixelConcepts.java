@@ -3,6 +3,7 @@ package com.OutCraft.blockixelconcepts;
 import com.OutCraft.blockixelconcepts.lists.BlockList;
 import com.OutCraft.blockixelconcepts.lists.EntityList;
 import com.OutCraft.blockixelconcepts.lists.ItemList;
+import com.OutCraft.blockixelconcepts.world.MobSpawns;
 import com.OutCraft.blockixelconcepts.world.gen.VegetationGen;
 import com.OutCraft.blockixelconcepts.world.gen.features.FeatureList;
 
@@ -29,6 +30,7 @@ public class BlockixelConcepts {
 		this.modEventBus.addListener(EntityList::addEntityAttributes);
 
 		MinecraftForge.EVENT_BUS.register(VegetationGen.class);
+		MinecraftForge.EVENT_BUS.register(MobSpawns.class);
 
 		BlockList.Blocks.register(this.modEventBus);
 		ItemList.Items.register(this.modEventBus);
@@ -43,6 +45,6 @@ public class BlockixelConcepts {
 	}
 
 	private void clientSetup(final FMLClientSetupEvent event) {
-		ItemBlockRenderTypes.setRenderLayer(BlockList.FANCY_CACTUS.get(), RenderType.translucent()); // Replace ModBlocks.INFUSER_BLOCK.get() with your block
+		ItemBlockRenderTypes.setRenderLayer(BlockList.FANCY_CACTUS.get(), RenderType.translucent());
 	}
 }
