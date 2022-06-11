@@ -9,7 +9,6 @@ import com.OutCraft.blockixelconcepts.lists.ItemList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity.RemovalReason;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
@@ -54,16 +53,13 @@ public class VultureTravelGoal extends Goal {
 		this.travelDirection = this.travelPlayer.getDirection();
 		int travelDistance = (this.vulture.getMainHandItem().getOrCreateTag().getInt("treasureType") ^ 2) * 100;
 		this.travelPos = this.vulture.blockPosition().relative(this.travelDirection, travelDistance).atY(128);
-		int travelSpeed = Math.max(1, this.vulture.getMainHandItem().getOrCreateTag().getInt("treasureType") / 2);
-
-		this.vulture.getAttribute(Attributes.FLYING_SPEED)
-				.setBaseValue(this.vulture.getAttribute(Attributes.FLYING_SPEED).getBaseValue() * travelSpeed);
+		//int travelSpeed = Math.max(1, this.vulture.getMainHandItem().getOrCreateTag().getInt("treasureType") / 2);
 
 		this.vulture.setYRot(this.travelDirection.toYRot());
 		this.travelPlayer.startRiding(this.vulture);
 
 		this.vulture.setMoveControl(new FlyingMoveControl(this.vulture, 20, true));
-		this.vulture.getNavigation().moveTo(this.travelPos.getX(), this.travelPos.getY(), this.travelPos.getZ(), 1);
+		this.vulture.getNavigation().moveTo(this.travelPos.getX(), this.travelPos.getY(), this.travelPos.getZ(), 3);
 
 		super.start();
 	}
@@ -77,9 +73,9 @@ public class VultureTravelGoal extends Goal {
 			this.vulture.discard();
 
 		--this.tryTicks;
-		if (this.tryTicks <= 0) {
+		if (this.tryTicks <= 0 || this.vulture.getNavigation().isDone()) {
 			this.vulture.getNavigation().recomputePath();
-			this.tryTicks = 50;
+			this.tryTicks = 200;
 		}
 
 		if (this.vulture.distanceToSqr(this.travelPos.getX(), this.travelPos.getY(), this.travelPos.getZ()) <= 10) {

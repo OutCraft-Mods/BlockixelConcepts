@@ -48,10 +48,10 @@ public class FancyCactus extends Block implements IPlantable {
 			Block.box(3, 5, 9, 7, 11, 13)); // Just for testing
 	public static final VoxelShape CACTUS_MIDDLE_SHAPE = Shapes.or(Block.box(6, 0, 4, 12, 6, 10),
 			Block.box(3, 5, 9, 7, 11, 13)); // Just for testing
-	public static final VoxelShape CACTUS_BIG_SHAPE = Shapes.or(Shapes.box(-0.25, 0.5, 0.3125, 0.3125, 1.0625, 0.875),
-			Shapes.box(0, 1, 0, 0.6875, 1.6875, 0.6875), Shapes.box(0.125, 0, 0, 0.8125, 0.6875, 0.6875),
-			Shapes.box(0.75, 0.625, 0.1875, 1.0625, 1.0625, 0.5), Shapes.box(1, 1, 0.125, 1.3125, 1.3125, 0.4375),
-			Shapes.box(1.0625, 0.5, 0.25, 1.25, 0.6875, 0.4375));
+	public static final VoxelShape CACTUS_BIG_SHAPE = Shapes.or(Block.box(-0.25, 0.5, 0.3125, 0.3125, 1.0625, 0.875),
+			Block.box(0, 1, 0, 0.6875, 1.6875, 0.6875), Block.box(0.125, 0, 0, 0.8125, 0.6875, 0.6875),
+			Block.box(0.75, 0.625, 0.1875, 1.0625, 1.0625, 0.5), Block.box(1, 1, 0.125, 1.3125, 1.3125, 0.4375),
+			Block.box(1.0625, 0.5, 0.25, 1.25, 0.6875, 0.4375)); // Final (I think)
 
 	public FancyCactus() {
 		super(BlockBehaviour.Properties.of(Material.CACTUS).dynamicShape().randomTicks().strength(0.4F)
