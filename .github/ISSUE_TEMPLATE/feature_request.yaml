@@ -1,0 +1,32 @@
+name: Feature editing request
+description: Suggest editing/changing a feature/concept in this mod
+title: "[Feature request]: PLEASE DISABLE KILLERZOMBIES THAT HACK YOUR PC PLEAAAASE!!!1!!1!1"
+labels: ["Feature request"]
+body:
+  - type: textarea
+    attributes:
+      label: Relation to a problem
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: "I'm always frustrated when Killerzombies hack my pc, because I can't play minecraft then anymore."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Soloution
+      description: Describe the solution you'd like.
+      placeholder: "Killerzombies simply shouldn't crash Minecraft and hack my pc!"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Alternatives
+      description: Describe alternatives you've considered.
+      placeholder: "Installing antivirus software so that the Killerzombies can't hack my pc."
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Other Details / Screenshots
+      description: If applicable, add other details and/or screenshots.
+    validations:
+      required: false
