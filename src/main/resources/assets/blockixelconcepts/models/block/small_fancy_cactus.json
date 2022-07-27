@@ -1,0 +1,33 @@
+{
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "blockixelconcepts:block/fancy_cactus_small",
+		"particle": "blockixelconcepts:block/fancy_cactus_small"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 4],
+			"to": [12, 6, 10],
+			"faces": {
+				"north": {"uv": [3, 6, 6, 9], "texture": "#0"},
+				"east": {"uv": [6, 3, 9, 6], "texture": "#0"},
+				"south": {"uv": [6, 6, 9, 9], "texture": "#0"},
+				"west": {"uv": [0, 9, 3, 12], "texture": "#0"},
+				"up": {"uv": [12, 3, 9, 0], "texture": "#0"},
+				"down": {"uv": [6, 9, 3, 12], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 5, 7],
+			"to": [9, 11, 13],
+			"faces": {
+				"north": {"uv": [0, 0, 3, 3], "texture": "#0"},
+				"east": {"uv": [0, 3, 3, 6], "texture": "#0"},
+				"south": {"uv": [3, 0, 6, 3], "texture": "#0"},
+				"west": {"uv": [3, 3, 6, 6], "texture": "#0"},
+				"up": {"uv": [3, 9, 0, 6], "texture": "#0"},
+				"down": {"uv": [9, 0, 6, 3], "texture": "#0"}
+			}
+		}
+	]
+}

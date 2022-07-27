@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[41,)"
+
+license="All rights reserved"
+
+[[mods]]
+modId="blockixelconcepts"
+version="${file.jarVersion}"
+
+displayName="Blockixel Concepts"
+
+credits="Thanks to Blockixel Artistry for these awesome concepts!"
+authors="OutCraft"
+
+description=''''''
+
+[[dependencies.blockixelconcepts]]
+    modId="forge"
+    mandatory=true
+    versionRange="[41,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.blockixelconcepts]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19,1.20)"
+    ordering="NONE"
+    side="BOTH"

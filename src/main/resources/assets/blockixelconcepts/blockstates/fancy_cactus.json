@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "cactus_type=0,facing=north": {
+      "model": "blockixelconcepts:block/small_fancy_cactus"
+    },
+	"cactus_type=0,facing=east": {
+      "model": "blockixelconcepts:block/small_fancy_cactus",
+	  "y": 90
+    },
+	"cactus_type=0,facing=south": {
+      "model": "blockixelconcepts:block/small_fancy_cactus",
+	  "y": 180
+    },
+	"cactus_type=0,facing=west": {
+      "model": "blockixelconcepts:block/small_fancy_cactus",
+	  "y": 270
+    },
+	"cactus_type=1,facing=north": {
+      "model": "blockixelconcepts:block/middle_fancy_cactus"
+    },
+	"cactus_type=1,facing=east": {
+      "model": "blockixelconcepts:block/middle_fancy_cactus",
+	  "y": 90
+    },
+	"cactus_type=1,facing=south": {
+      "model": "blockixelconcepts:block/middle_fancy_cactus",
+	  "y": 180
+    },
+	"cactus_type=1,facing=west": {
+      "model": "blockixelconcepts:block/middle_fancy_cactus",
+	  "y": 270
+    },
+	"cactus_type=2,facing=north": {
+      "model": "blockixelconcepts:block/big_fancy_cactus"
+    },
+	"cactus_type=2,facing=east": {
+      "model": "blockixelconcepts:block/big_fancy_cactus",
+	  "y": 90
+    },
+	"cactus_type=2,facing=south": {
+      "model": "blockixelconcepts:block/big_fancy_cactus",
+	  "y": 180
+    },
+	"cactus_type=2,facing=west": {
+      "model": "blockixelconcepts:block/big_fancy_cactus",
+	  "y": 270
+    }
+  }
+}
